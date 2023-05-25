@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +22,27 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//this will call view /hello.blade.php
+Route::get('/about', function () {
+    return view('about');
+});
+
+
+// Route::get('/products', function () {
+//     return view('product.index');
+// });
+
+
+
+//this will return the index.blade.php in views/product/index
+Route::get('/products', [ProductController::class, 'index']);
+
+Route::get('/index', [IndexController::class, 'index']);
+
+
+
+//example
+Route::get('/CP', function () {
+    return 'Chess Player';
+});

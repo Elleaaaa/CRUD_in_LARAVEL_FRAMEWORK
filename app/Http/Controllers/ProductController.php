@@ -36,49 +36,48 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        {
+    { {
             //dd($request);
             //Set min and max values
             $this->validate($request, [
                 'name' => 'required|min:3|max:50',
                 'unit' => 'required|min:3|max:50'
             ]);
-    
+
             //Set default values in case the user left the fields empty
             //I prefer this over an error message requiring the user to enter something
             //Default values allow faster data entry
-            if($request->input('unit') == null){
+            if ($request->input('unit') == null) {
                 $unit = 'Kilo';
-            }else{
+            } else {
                 $unit = $request->input('unit');
             }
-    
-            if($request->input('price') == null){
+
+            if ($request->input('price') == null) {
                 $price = 49.99;
-            }else{
+            } else {
                 $price = $request->input('price');
             }
-    
-            if($request->input('description') == null){
+
+            if ($request->input('description') == null) {
                 $description = 'Product of RBJ Agrivet Supplies';
-            }else{
+            } else {
                 $description = $request->input('description');
             }
-    
-    
+
+
             //We are yet to use the `discontinued` attribute
             //We'll set a default value to avoid database errors
-    
+
             if ($request->input('discontinued') == null) {
                 $discontinued = 1;
-            } else if  ($request->input('discontinued') == 'on') {
+            } else if ($request->input('discontinued') == 'on') {
                 $discontinued = 0;
             }
-    
+
             //Clean the value for price. Remove any invalid characters.
             $price = floatval(preg_replace('/[^\d.]/', '', $price));
-    
+
             //Find the product using the Product model and its ID.
             $product = new Product;
             //Assign values using the field names from the HTML form
@@ -93,9 +92,8 @@ class ProductController extends Controller
             $product->save();
             $id = DB::getPdo()->lastInsertId();
             //Redirect back to the show view with a message
-            return redirect('product/show/'.$id)->with('status', 'Record Created!');
+            return redirect('product/show/' . $id)->with('status', 'Record Created!');
         }
-
     }
 
     /**
@@ -130,63 +128,66 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //dd($request);
-        //Set min and max values
-        $this->validate($request, [
-            'name' => 'required|min:3|max:50',
-            'unit' => 'required|min:3|max:50'
-        ]);
+    { {
+            //dd($request);
+            //Set min and max values
+            $this->validate($request, [
+                'name' => 'required|min:3|max:50',
+                'unit' => 'required|min:3|max:50'
+            ]);
 
-        //Set default values in case the user left the fields empty
-        //I prefer this over an error message requiring the user to enter something
-        //Default values allow faster data entry
-        if($request->input('unit') == null){
-            $unit = 'Kilo';
-        }else{
-            $unit = $request->input('unit');
+            //dd($request);
+
+            //Set default values in case the user left the fields empty
+            //I prefer this over an error message requiring the user to enter something
+            //Default values allow faster data entry
+            if ($request->input('unit') == null) {
+                $unit = 'Kilo';
+            } else {
+                $unit = $request->input('unit');
+            }
+
+            if ($request->input('price') == null) {
+                $price = 49.99;
+            } else {
+                $price = $request->input('price');
+            }
+
+            if ($request->input('description') == null) {
+                $description = 'Scented Candle';
+            } else {
+                $description = $request->input('description');
+            }
+
+
+            //We are yet to use the discontinued attribute
+            //We'll set a default value to avoid database errors
+
+            if ($request->input('discontinued') == null) {
+                $discontinued = 1;
+            } else if ($request->input('discontinued') == 'on') {
+                $discontinued = 0;
+            }
+
+            //Clean the value for price. Remove any invalid characters.
+            $price = floatval(preg_replace('/[^\.]/', '', $price));
+
+            //Find the product using the Product model and its ID.
+            $product = Product::find($id);
+            //Assign values using the field names from the HTML form
+            $product->name = $request->input('name');
+            $product->description = $description;
+            $product->category = $request->input('category');
+            $product->branch = $request->input('branch');
+            $product->price = $price;
+            $product->unit = $unit;
+            //dd($product);
+            //Save to the database
+            $product->save();
+
+            //Redirect back to the show view with a message
+            return redirect('product/show/' . $id)->with('status', 'Record Saved!');
         }
-
-        if($request->input('price') == null){
-            $price = 49.99;
-        }else{
-            $price = $request->input('price');
-        }
-
-        if($request->input('description') == null){
-            $description = 'Product of RBJ Agrivet Supplies';
-        }else{
-            $description = $request->input('description');
-        }
-
-
-        //We are yet to use the `discontinued` attribute
-        //We'll set a default value to avoid database errors
-
-        if ($request->input('discontinued') == null) {
-            $discontinued = 1;
-        } else if  ($request->input('discontinued') == 'on') {
-            $discontinued = 0;
-        }
-
-        //Clean the value for price. Remove any invalid characters.
-        $price = floatval(preg_replace('/[^\d.]/', '', $price));
-
-        //Find the product using the Product model and its ID.
-        $product = Product::find($id);
-        //Assign values using the field names from the HTML form
-        $product->name = $request->input('name');
-        $product->description = $description;
-        $product->category = $request->input('category');
-        $product->branch = $request->input('branch');
-        $product->price = $price;
-        $product->unit = $unit;
-        //dd($product);
-        //Save to the database
-        $product->save();
-
-        //Redirect back to the show view with a message
-        return redirect('product/show/'.$id)->with('status', 'Record Saved!');
     }
 
     /**
@@ -199,6 +200,6 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $product->delete();
-        return redirect('/products')->with('status', 'Record Deleted!');
+        return redirect('/product')->with('status', 'Record Deleted!');
     }
 }

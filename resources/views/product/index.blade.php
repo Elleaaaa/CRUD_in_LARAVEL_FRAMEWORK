@@ -11,7 +11,7 @@
             @endif
 
             <div class="card">
-                <div class="card-header">Products<a href="/product/create" class="btn btn-success float-right">Create New</a></div>
+                <div class="card-header"><h3>Products</h3> <a href="/product/create" class="btn btn-success float-right">Create New</a></div>
 
                 <div class="card-body">
 
@@ -32,6 +32,13 @@
                                 <td><a href="/product/show/{{$product->id}}">{{ $product->name }}</td>
                                 <td>{{ $product->category }}</td>
                                 <td>Php {{ $product->price }}</td>
+                                <td>
+                                    <form action="/product/delete/{{$product->id}}" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger float-right btn-sm">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

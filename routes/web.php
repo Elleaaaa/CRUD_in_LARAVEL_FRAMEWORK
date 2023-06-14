@@ -45,7 +45,7 @@ Route::get('/welcome', function () {
 
 
 //this will return the index.blade.php in views/product/index
-Route::get('/products', [ProductController::class, 'index']);
+//Route::get('/products', [ProductController::class, 'index']);
 
 Route::get('/index', [IndexController::class, 'index']);
 
@@ -61,7 +61,7 @@ Route::get('/product/create', [ProductController::class, 'create']);
 Route::post('product/store', [ProductController::class, 'store']);
 Route::get('/product/show/{product}', [ProductController::class, 'show']);
 Route::get('/product/edit/{product}', [ProductController::class, 'edit']);
-Route::get('/product/update/{product}', [ProductController::class, 'update']);
+Route::put('/product/update/{product}', [ProductController::class, 'update']);
 Route::delete('/product/delete/{product}', [ProductController::class, 'destroy']);
 //Route::get('/product/delete/{product}', 'ProductController@destroy')->name('destroy/product');
 

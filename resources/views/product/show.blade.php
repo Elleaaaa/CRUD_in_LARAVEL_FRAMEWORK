@@ -39,6 +39,7 @@
                             <input type="unit" class="form-control" id="inputUnit" placeholder={{$product->unit}}  disabled="true">
                         </div>
                         <div class="col-12">
+                          <a href="/product" class="btn btn-secondary" >Products</a>
                           <a href="/product/edit/{{$product->id}}" class="btn btn-primary">Edit</a>
                         </div>
                       </div>
